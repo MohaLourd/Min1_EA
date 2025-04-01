@@ -9,13 +9,14 @@ import adminRoutes from "./routes/admin.routes";
 import { corsHandler } from "./middleware/corsHandler";
 import { loggingHandler } from "./middleware/loggingHandler";
 import { routeNotFound } from "./middleware/routeNotFound";
+import etiquetaMin1Routes from "./routes/etiquetaMin1.routes";
 
 const app = express();
 
 app.set("port", process.env.PORT || 4000);
 app.use(corsHandler); //Middleware para gestionar las peticiones permitidas
 app.use(loggingHandler); //Middleware para registrar las peticiones por consola
-app.use(express.json());//Middleware para convertir JSON a objetos de JS a traves de req.body
+app.use(express.json()); //Middleware para convertir JSON a objetos de JS a traves de req.body
 
 app.use(express.json() as RequestHandler);
 
@@ -28,12 +29,14 @@ app.use("/api/products", productsRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/orders", pedidosRoutes);
 app.use("/api/admins", adminRoutes);
-
-app.use(routeNotFound);//Middleware para informar de una ruta inexistente fuera de /users , /products ,etc.
+app.use("/api/etiquetas", etiquetaMin1Routes);
+app.use(routeNotFound); //Middleware para informar de una ruta inexistente fuera de /users , /products ,etc.
 
 app.listen(app.get("port"), () => {
   console.log(`Server running on port ${app.get("port")}`);
-  console.log(`Swagger running at http://localhost:${app.get("port")}/api-docs/`);
+  console.log(
+    `Swagger running at http://localhost:${app.get("port")}/api-docs/`
+  );
 });
 
 export default app;
